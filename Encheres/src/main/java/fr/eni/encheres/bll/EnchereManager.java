@@ -13,7 +13,7 @@ import java.util.List;
 public class EnchereManager {
 
     private static EnchereManager instance;
-    private EnchereDao enchereDao;
+    private static EnchereDao enchereDao;
 
     //Constructeur privé
     private EnchereManager() {
