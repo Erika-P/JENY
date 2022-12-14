@@ -16,7 +16,7 @@ import java.util.List;
 public class ArticleManager {
 
     private static ArticleManager instance;
-    private ArticleDao articleDao;
+    private static ArticleDao articleDao;
 	
 
     //Private constractor
