@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class RetraitManager {
 
     private static RetraitManager instance;
-    private RetraitDao retraitDao;
+    private static RetraitDao retraitDao;
 
 
     //Private constractor
