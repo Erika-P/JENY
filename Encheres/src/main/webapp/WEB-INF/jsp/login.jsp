@@ -47,6 +47,7 @@
     <c:if test="${login_error}">
             <p class="text-danger text-center">Identifiant ou mot de passe incorrect</p>
     </c:if>
+    <br>
     <div class="form-group d-flex justify-content-center">
         <button type="submit" class="btn btn-info col-4 col-lg-2 offset-sm-1 text-center offset-1">Connexion</button>
         <div class="form-group form-check d-flex flex-column col-8 offset-md-1 col-md-3 pt-2 ml-2">
