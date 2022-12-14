@@ -63,7 +63,7 @@
             <th scope="row">Mise à prix&nbsp;:</th>
             <td>${enchere.article.prixInitial} pts</td>
         </tr>
-       <c:if test="${utilisateurSession.pseudo == user_best_offer}">
+       <c:if test="${utilisateurSession.pseudo != user_best_offer}">
         <tr >
             <th scope="row">Fin de l'enchère&nbsp;:</th>
             <td><fmt:formatDate value="${auction.dateFinEncheres}" type="date" pattern="dd/MM/YYYY"/></td>
@@ -77,7 +77,7 @@
             <th scope="row">Vendeur&nbsp;:</th>
             <td>${seller.pseudo}</td>
         </tr>
-        <c:if test="${utilisateurSession.noUtilisateur != auction.noUtilisateur}">
+        <c:if test="${utilisateurSession.pseudo == user_best_offer}">
         <tr>
           <th scope="row">Téléphone&nbsp;:</th>
             <td ><a href="aquisition?id=${auction.noArticle}">${seller.phone}</a></td>     
