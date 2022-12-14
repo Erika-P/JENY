@@ -123,7 +123,7 @@
                 </p>
                 <p>Fin de l'enchère : <fmt:formatDate value="${article.dateFinEncheres}" type="date" pattern="dd/MM/YYYY"/> </p>
                 <p>Vendeur : ${pseudos[article.noArticle]}</p>
-                <a class="text-center" href="${pageContext.request.contextPath}/auction?id=${article.noArticle}"><button class="btn btn-info mb-3">Voir l'enchère</button></a>
+                <a class="text-center" href="${pageContext.request.contextPath}/encherir?id=${article.noArticle}"><button class="btn btn-info mb-3">Voir l'enchère</button></a>
             </div>
         </c:forEach>
     </div>
