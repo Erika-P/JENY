@@ -14,7 +14,7 @@
 <%@include file="/WEB-INF/jsp/nav.jsp"%>
 <%--@elvariable id="page" type="string"--%>
 
-<%if(session.getAttribute("ConnectedUser") instanceof Utilisateur){
+<%if(session.getAttribute("ConnectedUser") instanceof Utilisateur && session.getAttribute("connectedUser") != null){
 		Utilisateur connectedUser = (Utilisateur) session.getAttribute("ConnectedUser");	
 	%>
 	
