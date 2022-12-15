@@ -39,91 +39,62 @@ public class Connexion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
 	       
-		Utilisateur user = null;
+        PrintWriter out= response.getWriter();
 		
-		try {
-			
-			String nom = request.getParameter("nom");
-			String prenom = request.getParameter("prenom");
-			String pseudo = request.getParameter("pseudo");
-			String email = request.getParameter("email");
-			String password = request.getParameter("mdp");
-			String confirmation = request.getParameter("mdpConf");
-			String telephone = request.getParameter("tel");
-			String rue = request.getParameter("rue");
-			String ville = request.getParameter("ville");
-			String codePostal = request.getParameter("cp");
-			String dateDeNaissance = request.getParameter("datedn");
-			
-			List<Utilisateur> allPseudos = UtilisateurManager.selectAllUtilisateur();
-			
-			if(nom.length()==0 || nom.isEmpty() ) {
-				request.setAttribute("erreur", "Le nom n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}	
-			else if (prenom.length()==0 || prenom.isEmpty() ) {
-				request.setAttribute("erreur", "Le pr�nom n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}
-			else if (pseudo.length()==0 || pseudo.isEmpty() ) {
+		HttpSession session = request.getSession();
+		
+		String erreur = null;
+		
+		String identifiant = request.getParameter("id");
+		String password = request.getParameter("mdp");
+		
+		
+		if(identifiant.length()==0 || identifiant.isEmpty()){
 				
-				request.setAttribute("erreur", "Le pseudo n'a pas été renseigné, veuillez le saisir ...");			
-				dispatcher.forward(request, response);
-			}
-			else if (allPseudos.contains(pseudo)) {
-				request.setAttribute("erreur", "Ce pseudo est déjà utilisé, veuillez le saisir ...");
-									
-				dispatcher.forward(request, response);
-			}
-			else if (email.length()==0 || email.isEmpty() ) {
-				request.setAttribute("erreur", "L'email n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}
-			else if (password.length()==0 || password.isEmpty() ) {
-				request.setAttribute("erreur", "Le mot de passe n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}
-			else if (rue.length()==0 || rue.isEmpty() ) {
-				request.setAttribute("erreur", "La rue n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}
-			else if (ville.length()==0 || ville.isEmpty() ) {
-				request.setAttribute("erreur", "La ville n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}
-			else if (codePostal.length()==0 || codePostal.isEmpty() ) {
-				request.setAttribute("erreur", "Le code postal n'a pas été renseigné, veuillez le saisir ...");
-				dispatcher.forward(request, response);
-			}
-			else if (confirmation.equals(password)) {
+			//création de l'erreur
+			request.setAttribute("erreur", "pseudo non renseigné. Veuillez le saisir...");
+			erreur = (String) session.getAttribute("erreur");
+			out.println(erreur);
 			
-				user = new Utilisateur();
-				user = UtilisateurManager.inscriptionUtilisateur(user);
+			//redirection vers la page de connexion pour saisir le login
+			this.getServletContext().getRequestDispatcher("/WEB-INF/jsp/register.jsp").forward(request, response);
+			
+			
+		}else if(password.length()==0 || password.isEmpty()) {
 				
-				if (user != null) {
-					HttpSession session = request.getSession();
-					session.setAttribute("ConnectedUser", user);
+			//cr�ation de l'erreur
+			request.setAttribute("erreur", "mot de passe non renseigné. Veuillez le saisir...");
+			erreur = (String) session.getAttribute("erreur");
+			out.println(erreur);
+			//redirection vers la page de connexion pour saisir le login
+			this.getServletContext().getRequestDispatcher("/Connexion").forward(request, response);
+			
+		}else {
+			
+			try {
+		
+				//Valider pseudo utilisateur, verification si il est bien dans la bdd
+				Utilisateur user = UtilisateurManager.selectUserByPseudo(identifiant);
+				//Si la connexion est reussie
+				if(user!= null && password.equals(user.getMotDePasse())) {
+					request.getSession().setAttribute("ConnectedUser", user);
 					
 					this.getServletContext().getRequestDispatcher("/Accueil").forward(request, response);
-				} 
-				else 
-				{
-					request.setAttribute("erreur", "Aucun utilisateur");
-					dispatcher.forward(request, response);
+					
+				} else {
+					request.setAttribute("erreur", "pseudo et/ou mot de passe incorrect(s)! Veuillez ressaisir vos identifiants...");
+					erreur = (String) session.getAttribute("erreur");
+					out.println(erreur);
+					this.getServletContext().getRequestDispatcher("/Connexion").forward(request, response);
 				}
-				
+			} catch (BusinessException e) {
+				request.setAttribute("erreur", e);
+				this.getServletContext().getRequestDispatcher("/ServletErreurPage").forward(request, response);
 			}
-			
-		}catch (BusinessException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (DalException e) {
-			e.printStackTrace();
-		} catch (BllException e) {
-			e.printStackTrace();
-		} 
+		
+		}
 	}
 }
