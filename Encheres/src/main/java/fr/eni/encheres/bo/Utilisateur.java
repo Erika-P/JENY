@@ -6,7 +6,6 @@ import java.time.LocalDate;
 public class Utilisateur implements Serializable {
     private static final long serialVersionUID = 1L;
     private int id;
-    private int noUtilisateur;
     private String pseudo;
     private String nom;
     private String prenom;
@@ -18,7 +17,6 @@ public class Utilisateur implements Serializable {
     private String MotDePasse;
     private int credit;
     private boolean administration;
-    private LocalDate dateDeNaissance;
 
     
     public Utilisateur() {
@@ -26,7 +24,6 @@ public class Utilisateur implements Serializable {
 
 
     public Utilisateur(int id,
-    		           int noUtilisateur, 
     		           String pseudo, 
     		           String nom, 
     	           	   String prenom, 
@@ -37,8 +34,7 @@ public class Utilisateur implements Serializable {
     		           String ville, 
     		           String motDePasse, 
     		           int credit, 
-    		           boolean administration,
-    		           LocalDate dateDeNaissance) {
+    		           boolean administration) {
     	this.id = id;
         this.noUtilisateur = noUtilisateur;
         this.pseudo = pseudo;
@@ -52,7 +48,6 @@ public class Utilisateur implements Serializable {
         this.MotDePasse = motDePasse;
         this.credit = credit;
         this.administration = administration;
-        this.setDateDeNaissance(dateDeNaissance);
     }
 
     public Utilisateur(String pseudo, 
@@ -65,8 +60,7 @@ public class Utilisateur implements Serializable {
     		           String ville, 
     		           String motDePasse, 
     		           int credit, 
-    		           boolean administration,
-    		           LocalDate dateDeNaissance) {
+    		           boolean administration) {
         this.pseudo = pseudo;
         this.nom = nom;
         this.prenom = prenom;
@@ -78,18 +72,9 @@ public class Utilisateur implements Serializable {
         this.MotDePasse = motDePasse;
         this.credit = credit;
         this.administration = administration;
-        this.setDateDeNaissance(dateDeNaissance);
     }
 
-
-    public int getNoUtilisateur() {
-        return noUtilisateur;
-    }
-
-    public void setNoUtilisateur(int noUtilisateur) {
-        this.noUtilisateur = noUtilisateur;
-    }
-
+	
     public String getPseudo() {
         return pseudo;
     }
@@ -185,16 +170,6 @@ public class Utilisateur implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-	public LocalDate getDateDeNaissance() {
-		return dateDeNaissance;
-	}
-
-
-	public void setDateDeNaissance(LocalDate dateDeNaissance) {
-		this.dateDeNaissance = dateDeNaissance;
-	}
     
     
     @Override
