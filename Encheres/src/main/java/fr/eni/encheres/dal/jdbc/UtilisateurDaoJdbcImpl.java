@@ -154,27 +154,27 @@ public class UtilisateurDaoJdbcImpl implements UtilisateurDao {
 
   @Override
   public Utilisateur insert(Utilisateur ajoutUtilisateur) throws SQLException, DalException {
-    Utilisateur utilisateurCree = null;
-    int idAjout = 0;
+	  
+    if (ajoutUtilisateur == null) {
+        BusinessException businessException = new BusinessException();
+	businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+	throw businessException;
+	}
+	  
     try (Connection cnx = ConnectionProvider.getConnection()) {
       PreparedStatement preparedStatement = cnx.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
       preparedStatement.setString(1, ajoutUtilisateur.getPseudo());
       preparedStatement.setString(2, ajoutUtilisateur.getNom());
       preparedStatement.setString(3, ajoutUtilisateur.getPrenom());
       preparedStatement.setString(4, ajoutUtilisateur.getEmail());
-      if (ajoutUtilisateur.getTelephone() == null) {
-        preparedStatement.setNull(5, Types.VARCHAR);
-      }
-      else
-      {
-        preparedStatement.setString(5, ajoutUtilisateur.getTelephone());
-      }
-
+      preparedStatement.setString(5, ajoutUtilisateur.getTelephone());
       preparedStatement.setString(6, ajoutUtilisateur.getRue());
       preparedStatement.setString(7, ajoutUtilisateur.getCodePostal());
       preparedStatement.setString(8, ajoutUtilisateur.getVille());
       preparedStatement.setString(9, ajoutUtilisateur.getMotDePasse());
-      System.out.println(preparedStatement.toString());
+       preparedStatement.setInt(10, 0);
+      preparedStatement.setBoolean(11, false);    
+	    
       preparedStatement.executeUpdate();
       ResultSet resultSet = preparedStatement.getGeneratedKeys();
 
